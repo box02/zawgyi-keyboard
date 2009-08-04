@@ -17,7 +17,7 @@
 #
 #	You can always get the lastest version of this module at:
 #
-#		http://zawgyi-keyboard.googlecode.com/svn/branch/py-package
+#	http://zawgyi-keyboard.googlecode.com/svn/branch/py-package/zawgyi
 #
 #	If that URL should fail, try contacting the author.
 #
@@ -36,7 +36,7 @@ __license__  = "GPLv3"
 
 """ 	zawgyi-keyboard package """
 __version__ = "0.3.0"
-__metor__ = "box02 <thebox02@gmail.com>
+__metor__ = "box02 <thebox02@gmail.com>"
 
 import os
 import sys
