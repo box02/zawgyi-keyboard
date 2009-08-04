@@ -114,11 +114,11 @@ print 'Checking source files from the package...'
  	otherwise you might have to declare your src_path.
  	for example:
 		src_path = './src0/' and './src1'
-		font_file = './src/?.ttf'
-		xkb_data = './src/mm'
-		map_file = './src/?.pdf or ?.png or ?.jpg'
-		desktop_file = '/src/?.desktop'
-		icon = './src/?.png'
+		font_file = './src0/?.ttf'
+		xkb_data = './src0/mm'
+		map_file = './src0/?.pdf or ?.png or ?.jpg'
+		desktop_file = './src0/?.desktop' & './src1/?.desktop'
+		icon = './src0/?.png'
 		
 """
 # my source folder and files here:
@@ -399,5 +399,5 @@ You may NEED to Log Out or Restart your system to correct your keyboard.\n'''
 			print '\nProceeding font updating...\n'
 			font_update()
 		else:
-			print '\nPlease press *small letter* [i] [r] [h] [u] [q] ! \n'
+			print '\nPlease press *small letter* [i] [r] [h] [u] [q] !\n'
 		
