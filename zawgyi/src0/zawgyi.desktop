@@ -1,0 +1,12 @@
+[Desktop Entry]
+Version=1.0
+Encoding=UTF-8
+Name=Zawgyi Keyboard
+GenericName=Zawagyi Keyboard
+Comment=Zawgyi Keyboard Layout
+Categories=Application;System;
+Type=Application
+Exec=eog "/usr/share/zawgyi/zawgyi_keyboard_unicode5.1_style.png"
+Icon=/usr/share/pixmaps/zawgyi.png
+Terminal=false
+StartupNotify=true
