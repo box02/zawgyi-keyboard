@@ -1,5 +1,10 @@
 ﻿#!/usr/bin/env python
 # -*- coding: UTF-8 -*-
+#	
+#	zawgyi_keyboard.py tries to help you get your fonts and xkb data on
+#	Linux/Unix system. It makes you easy install, remove, upgrade font.
+#
+#	copyright (c) 2009, Phone Htut <phonehtut2@gmail.com>
 #
 #	This program is free software: you can redistribute it and/or modify
 #	it under the terms of the GNU General Public License as published by
@@ -31,7 +36,7 @@
 """
 __author__ = "Phone Htut <phonehtut2@gmail.com>"
 __copyright__ = "Copyright (c) 2009, Phone Htut"
-__license__  = "GPLv3"
+__license__  = "GPL"
 
 
 """ 	zawgyi-keyboard package """
@@ -41,6 +46,7 @@ __metor__ = "box02 <thebox02@gmail.com>"
 import os
 import sys
 import glob
+import subprocess
 
 #Classifying operating system paths, you can add other distro fhs.
 class linux:
@@ -135,8 +141,13 @@ icon = 'zawgyi.png'
 if os.path.exists(src_path_0):
 	for src_font in os.listdir(src_path_0):
 		if src_font.endswith('ttf'):
+			# real working path
 			src_font = os.path.join(src_path_0, src_font)
-	 		print 'Font : %s [ OK ]' % src_font
+			# for show font only
+			disp_src_font = src_font
+			num_src_l = len(src_path_0)
+			disp_src_font = disp_src_font[num_src_l:]
+	 		print 'Font : %s [ OK ]' % disp_src_font
 			break
 else:
 	print 'error: Font not found.'
@@ -318,9 +329,21 @@ def layout_help():
 	To see Keyboard Layout map, go to Applications > System Tools > Zawgyi
 	Keyboard.
 '''
+# Show current installed font
+def show_font():
+	""" Showing current installed system font """
+	font_dir = os.path.join(FONT_DIR, FONTNAME)
+    	if os.path.exists(font_dir):
+        	font_path = glob.glob(os.path.join(font_dir, '*.ttf'))
+        	print font_path
+        disp_font = font_path[0]
+        num = len(font_dir)
+        disp_font = disp_font[num + 1:]
+        print '\nCurrent installed font = %s\n' % disp_font
+        
 
 # New font updating if new updated font is released outside
-def font_update():
+def man_upgrade():
 	""" in case you want to update font if new updated font released  """
 	print '''WARNING: You should have New zawgyi font downloaded and You have to show me
 your path of directory where the new download font is. For example:
@@ -368,6 +391,36 @@ the old one. Otherwise your font and keyboard not functional!!!'''
 			break
 		else:
 			print '\nPlease press *small letter* [y] or [n] !\n'
+
+
+def online_upgrade():
+	""" Font upgrading from internet """
+	url = 'http://zawgyi-keyboard.googlecode.com/files/'
+	#TODO:url and file works
+	font = 'Zawgyi-One_2009_August_19_v4.11.ttf'
+	font_url = url + font
+	save_path = '/tmp/'
+	os.chdir(save_path)
+	process = subprocess.Popen(["wget", "-c", font_url])
+	process.wait()
+    
+    	if os.path.exists(save_path):
+        	for font in os.listdir(save_path):
+            		if font.endswith('ttf'):
+                		print font
+                		break
+    	get_font_path = os.path.join(save_path, font)
+
+    	# clean 
+    	delete_font_dir = os.path.join(FONT_DIR, FONTNAME)
+    	if os.path.exists(delete_font_dir):
+        	os.system('rm -rf ' + delete_font_dir)
+    	# upgrade
+    	upgrade_font_dir = os.path.join(FONT_DIR, FONTNAME)
+    	os.mkdir(upgrade_font_dir)
+    	if os.path.exists(upgrade_font_dir):
+        	os.system('cp %s %s ' % (get_font_path, upgrade_font_dir))
+        	print "\nFont upgrading done.\n"
 				
 					
 if __name__ == '__main__':
@@ -379,7 +432,7 @@ if __name__ == '__main__':
 	# asking what to do ( install or uninstall, something like that)
 	print "You are about to press..."
 	while 1:
-		ans = raw_input('[i] install, [r] remove, [h] layout help, [u] update font, [q] exit : ')
+		ans = raw_input('[i] install, [r] remove, [h] layout help, [u] man upgrade,\n[o] online upgrade, [s] show font, [q] exit : ')
 		if ans == 'i':
 			print '\nProceeding installation...\n'
 			remove()
@@ -397,7 +450,13 @@ You may NEED to Log Out or Restart your system to correct your keyboard.\n'''
 			sys.exit('\nHave a nice day, Good bye!\n')
 		elif ans == 'u':
 			print '\nProceeding font updating...\n'
-			font_update()
+			man_upgrade()
+		elif ans == 'o':
+			print '\nProceeding font upgrading...\n'
+			online_upgrade()
+		elif ans == 's':
+			print '\nProceeding to show current font...\n'
+			show_font()
 		else:
-			print '\nPlease press *small letter* [i] [r] [h] [u] [q] !\n'
+			print '\nPlease press *small letter* [i] [r] [h] [u] [o] [s] [q] !\n'
 		
