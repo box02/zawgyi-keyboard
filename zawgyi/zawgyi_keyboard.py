@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env python
+#!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 #	
 #	zawgyi_keyboard.py tries to help you get your fonts and xkb data on
@@ -71,8 +71,7 @@ class freebsd:
 		""" Classifying FreeBSD FHS """
 		print "Using FreeBSD FHS...\n"
 
-
-# Detecting distributions and finding correct paths for installation	
+# Detecting distributions and finding correct paths for installation
 if sys.platform == 'linux2':
 	print '\nYour system is running Linux'
 	use_fhs = linux()
@@ -111,7 +110,7 @@ elif sys.platform == 'cygwin':
 	ICONS_DIR = use_fhs.icons_dir
 else:
 	sys.exit('Sorry, please try on Linux/Unix system!\n')
-	
+
 # Checking source paths and source files
 print 'Checking source files from the package...'
 """	Checking source files in your package if you distribute
@@ -192,7 +191,8 @@ elif sys.platform == 'cygwin':
 	if os.path.exists(src_desktop):
 		print 'Desktop file for Cygwin [ OK ]'
 else:
-	print 'Refusing to install desktop file on menu.'# finding icon file
+	print 'Refusing to install desktop file on menu.'
+# finding icon file
 src_icon = os.path.join(src_path_0, icon)
 if os.path.exists(src_icon):
 	print 'Icon [ OK ]\n'
@@ -459,4 +459,4 @@ You may NEED to Log Out or Restart your system to correct your keyboard.\n'''
 			show_font()
 		else:
 			print '\nPlease press *small letter* [i] [r] [h] [u] [o] [s] [q] !\n'
-		
+

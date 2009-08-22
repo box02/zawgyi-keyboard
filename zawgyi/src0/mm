@@ -1,6 +1,7 @@
 // based on a keyboard map from an 'xkb/symbols/mm' file
 
 // Zawgyi 2009 July Keyboard by Soe Min <soemin@my-MM.org>
+// Fixed \ by kokhy
 
 // $XKeyboardConfig$
 
@@ -33,6 +34,7 @@ xkb_symbols "mm-zawgyi-2009-jul" {
     key <AD09> { [      U101E,      O,            o,           O ] };
     key <AD10> { [      U1005,      U100F,            p,           P ] };
     key <AD11> { [      U101F,      U1027,  bracketleft,   braceleft ] };
+    key <AD12> { [      U104F                           ] };
 
     key <AC01> { [      U1031,      U1017,            a,           A ] };
     key <AC02> { [      U103A,      U103D,            s,           S ] };
@@ -56,7 +58,7 @@ xkb_symbols "mm-zawgyi-2009-jul" {
     key <AB07> { [      U102C,       U103B,           m,           M ] };
     key <AB08> { [      U101A,        U101D,      comma,        less ] };
     key <AB09> { [      U104A,        U104B,     period,     greater ] };
-
+    
+    key <BKSL> { [ U104F ] };
 };
-
 
