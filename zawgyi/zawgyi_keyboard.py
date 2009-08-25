@@ -40,13 +40,15 @@ __license__  = "GPL"
 
 
 """ 	zawgyi-keyboard package """
-__version__ = "0.3.0"
+__version__ = "0.3.1"
 __metor__ = "box02 <thebox02@gmail.com>"
 
-import os
-import sys
 import glob
+import re
+import os
 import subprocess
+import sys
+import urllib2
 
 #Classifying operating system paths, you can add other distro fhs.
 class linux:
@@ -135,6 +137,9 @@ map1 = 'zawgyikeyboard.pdf'
 map2 = 'zawgyi_keyboard_unicode5.1_style.png'
 desktop_file = 'zawgyi.desktop'
 icon = 'zawgyi.png'
+
+# url from svn
+url = 'http://zawgyi-keyboard.googlecode.com/svn/branches/py-package/zawgyi/src0/'
 
 # finding fonts
 if os.path.exists(src_path_0):
@@ -306,6 +311,7 @@ def layout_help():
 	print '''
 	* Go to System > Preferences > Keyboard, click on Keyboard, then
 	Keyboard Preferences Window would be appeared.
+
 	* Go to Layout Tab and click on Add button. Choose a Layout Myanmar 
 	and press Add button. You will have both US English Layout and 
 	Myanmar Zawgyi Layout.
@@ -319,9 +325,7 @@ def layout_help():
 	You will see Keyboard Indicator on your Panel.
 
 	NOTE:
-	For old zawgyi font till ZawgyiOne20080210, it needs to have 
-	Third Level Chooser.
-	For new zawgyi font (from July 2009 version), it does not need 
+	As new zawgyi font (2009 version), it does not need 
 	to have Third Level Chooser. It would be using shift+f instead of 
 	pressing Third Level Switch Key. 
 	
@@ -340,6 +344,15 @@ def show_font():
         num = len(font_dir)
         disp_font = disp_font[num + 1:]
         print '\nCurrent installed font = %s\n' % disp_font
+        
+	""" Showing online available latest font """
+	html_f = urllib2.urlopen(url)
+	txt = html_f.read()
+	zg = re.search("Zawgyi.*?.ttf", txt)
+	font_zg = zg.group(0)
+	font_url = url+font_zg
+	global font_url
+	print 'Online available latest font :: %s\n' % font_zg
         
 
 # New font updating if new updated font is released outside
@@ -395,32 +408,28 @@ the old one. Otherwise your font and keyboard not functional!!!'''
 
 def online_upgrade():
 	""" Font upgrading from internet """
-	url = 'http://zawgyi-keyboard.googlecode.com/files/'
-	#TODO:url and file works
-	font = 'Zawgyi-One_2009_August_19_v4.11.ttf'
-	font_url = url + font
-	save_path = '/tmp/'
-	os.chdir(save_path)
+	save_path = os.curdir
+	# using wget to download font
 	process = subprocess.Popen(["wget", "-c", font_url])
 	process.wait()
     
-    	if os.path.exists(save_path):
-        	for font in os.listdir(save_path):
-            		if font.endswith('ttf'):
-                		print font
-                		break
-    	get_font_path = os.path.join(save_path, font)
-
-    	# clean 
-    	delete_font_dir = os.path.join(FONT_DIR, FONTNAME)
-    	if os.path.exists(delete_font_dir):
-        	os.system('rm -rf ' + delete_font_dir)
-    	# upgrade
-    	upgrade_font_dir = os.path.join(FONT_DIR, FONTNAME)
-    	os.mkdir(upgrade_font_dir)
-    	if os.path.exists(upgrade_font_dir):
-        	os.system('cp %s %s ' % (get_font_path, upgrade_font_dir))
-        	print "\nFont upgrading done.\n"
+	if os.path.exists(save_path):
+		for font in os.listdir(save_path):
+			if font.endswith('ttf'):
+				print font
+				break
+	get_font_path = os.path.join(save_path, font)
+	# clean 
+	delete_font_dir = os.path.join(FONT_DIR, FONTNAME)
+	if os.path.exists(delete_font_dir):
+		os.system('rm -rf ' + delete_font_dir)
+	# upgrade
+	upgrade_font_dir = os.path.join(FONT_DIR, FONTNAME)
+	os.mkdir(upgrade_font_dir)
+	if os.path.exists(upgrade_font_dir):
+		os.system('cp %s %s ' % (get_font_path, upgrade_font_dir))
+		os.remove(get_font_path)
+		print "\nFont upgrading done.\n"
 				
 					
 if __name__ == '__main__':
@@ -444,7 +453,7 @@ You may NEED to Log Out or Restart your system to correct your keyboard.\n'''
 			print '\nProceeding uninstallation...\n'
 			remove()
 		elif ans ==  'h':
-			print '\nProceeding keyboard layout option help...\n'
+			print '\nProceeding keyboard layout option help...'
 			layout_help()
 		elif ans == 'q':
 			sys.exit('\nHave a nice day, Good bye!\n')
@@ -453,6 +462,7 @@ You may NEED to Log Out or Restart your system to correct your keyboard.\n'''
 			man_upgrade()
 		elif ans == 'o':
 			print '\nProceeding font upgrading...\n'
+			show_font()
 			online_upgrade()
 		elif ans == 's':
 			print '\nProceeding to show current font...\n'
