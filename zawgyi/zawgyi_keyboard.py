@@ -350,8 +350,8 @@ def show_font():
 	txt = html_f.read()
 	zg = re.search("Zawgyi.*?.ttf", txt)
 	font_zg = zg.group(0)
-	font_url = url+font_zg
 	global font_url
+	font_url = url+font_zg
 	print 'Online available latest font :: %s\n' % font_zg
         
 
