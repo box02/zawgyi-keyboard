@@ -1,6 +1,16 @@
 zawgyi-keyboard source script install package
 --------------------------------------------
 
+v0.3.1
+
+* upgrade new zawgyi font (Zawgyi-One_2009_Aug_25_v4.19.ttf) by Soe Min
+* add showfont() and online_upgrade() in zawgyi_keyboard.py
+* change font_upgrade() to man_upgrade() in zawgyi_keyboard.py
+* mm file for '\' key fixed by kokhy
+
+ -- box02 <thebox02@gmail.com> $date Tue Aug 25 22:48:19 CEST 2009
+
+
 v0.3.0
 
 * upgrade new zawgyi font (Zawgyi-One_2009_Jul_30_rev01.ttf) by Soe Min
