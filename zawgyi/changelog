@@ -1,6 +1,17 @@
 zawgyi-keyboard source script install package
 --------------------------------------------
 
+v0.3.2
+
+* upgrade new zawgyi font (Zawgyi-One_v4.20_August_26_2009.ttf) by Soe Min
+* add error exceptions in zawgyi_keyboard.py
+* fixed offline causes errors
+* add some documentation in module
+* add Zawgyi_Keyboard_Layout_2009_Linux-Unix.pdf
+
+ -- box02 <thebox02@gmail.com> $date Fri Aug 28 01:43:26 CEST 2009
+
+
 v0.3.1
 
 * upgrade new zawgyi font (Zawgyi-One_2009_Aug_25_v4.19.ttf) by Soe Min
