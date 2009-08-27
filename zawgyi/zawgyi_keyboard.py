@@ -40,7 +40,7 @@ __license__  = "GPL"
 
 
 """ 	zawgyi-keyboard package """
-__version__ = "0.3.1"
+__version__ = "0.3.2"
 __metor__ = "box02 <thebox02@gmail.com>"
 
 import glob
@@ -133,8 +133,7 @@ src_path_0 = './src0/'
 src_path_1  = './src1/'
 #font_file  = not define -- changeable
 xkb_data = 'mm'
-map1 = 'zawgyikeyboard.pdf'
-map2 = 'zawgyi_keyboard_unicode5.1_style.png'
+key_map = 'zawgyi_keyboard_unicode5.1_style.png'
 desktop_file = 'zawgyi.desktop'
 icon = 'zawgyi.png'
 
@@ -166,20 +165,15 @@ if os.path.exists(src_xkb_data):
 	elif xkb_data.find('soemin@my-MM.org') == -1:
 		print 'You have modified zawgyi mm file!'
 	else:
-		print 'New mm xkeyboard unicode style [ OK ]'
+		print 'Xkeyboard : Zawgyi 2009 Original Unicode Style [ OK ]'
 else:
 	print 'error: mm xkeyboard file not found.'
 	sys.exit("Interrupted installation.\n")
 
 # finding keyboard map
-src_map_path1 = os.path.join(src_path_0, map1)
-src_map_path2 = os.path.join(src_path_0, map2)
-src_map_paths = [src_map_path1, src_map_path2]
-for correct_map_path in src_map_paths:
-	if os.path.exists(correct_map_path):
-		src_map_path = correct_map_path
-		print 'Keyboard layout map [ OK ]'
-		break
+src_map_path = os.path.join(src_path_0, key_map)
+if os.path.exists(src_map_path):
+    print 'Keyboard layout map [ OK ]'
 else:
 	print 'error: Keyboard Layout map not found.'
 # finding desktop file
@@ -242,14 +236,13 @@ def install():
 	if os.path.exists(mm_new):
 		print 'Installing %s keyboard done.' % FONTNAME
 	else:
-		print 'error: Not install xkb!'
+		print 'error: Not install xkeyboard!'
 		
 	# install zawgyi keymaps layout
 	print 'Installing %s keymaps layout...' % FONTNAME
 	os.system('cp %s %s' % (src_map_path, new_data_dir))
-	new_map_path1 = os.path.join(new_data_dir, map1)
-	new_map_path2 = os.path.join(new_data_dir, map2)	
-	if os.path.exists(new_map_path1) or os.path.exists(new_map_path2):
+	new_map_path = os.path.join(new_data_dir, key_map)
+	if os.path.exists(new_map_path):
 		print 'Installing %s keymaps layout done.' % FONTNAME
 	else:
 		print 'error: Not install keymaps layout!'	
@@ -339,21 +332,23 @@ def show_font():
 	font_dir = os.path.join(FONT_DIR, FONTNAME)
     	if os.path.exists(font_dir):
         	font_path = glob.glob(os.path.join(font_dir, '*.ttf'))
-        	print font_path
+        	#print font_path
         disp_font = font_path[0]
         num = len(font_dir)
         disp_font = disp_font[num + 1:]
-        print '\nCurrent installed font = %s\n' % disp_font
+        print '\nCurrent installed font in your system : %s\n' % disp_font
         
 	""" Showing online available latest font """
-	html_f = urllib2.urlopen(url)
-	txt = html_f.read()
-	zg = re.search("Zawgyi.*?.ttf", txt)
-	font_zg = zg.group(0)
-	global font_url
-	font_url = url+font_zg
-	print 'Online available latest font :: %s\n' % font_zg
-        
+	try:
+		html_f = urllib2.urlopen(url)
+		txt = html_f.read()
+		zg = re.search("Zawgyi.*?.ttf", txt)
+		font_zg = zg.group(0)
+		font_url = url+font_zg
+		print 'Latest available font from project svn : %s\n' % font_zg
+	except IOError:
+		print 'error: Unable to open url %s"' % url
+		print '\nIt seems that your system might be offline.\n'        
 
 # New font updating if new updated font is released outside
 def man_upgrade():
@@ -410,8 +405,18 @@ def online_upgrade():
 	""" Font upgrading from internet """
 	save_path = os.curdir
 	# using wget to download font
-	process = subprocess.Popen(["wget", "-c", font_url])
-	process.wait()
+	try:
+		html_f = urllib2.urlopen(url)
+		txt = html_f.read()
+		zg = re.search("Zawgyi.*?.ttf", txt)
+		font_zg = zg.group(0)
+		font_url = url+font_zg
+		
+		process = subprocess.Popen(["wget", "-c", font_url])
+		process.wait()
+	except IOError:
+		print '\nerror: Unable to download font, your system might be offline!\n'
+		sys.exit('Good bye!\n')
     
 	if os.path.exists(save_path):
 		for font in os.listdir(save_path):
@@ -429,13 +434,18 @@ def online_upgrade():
 	if os.path.exists(upgrade_font_dir):
 		os.system('cp %s %s ' % (get_font_path, upgrade_font_dir))
 		os.remove(get_font_path)
-		print "\nFont upgrading done.\n"
-				
-					
+		print '\nFont upgrading done.\n'
+
+	
 if __name__ == '__main__':
 
-	# Given font name, if you wish, you can change another font name.
-	# Now the module name is zawgyi_keyboard.py so I give the fontname as: 
+	"""	FONTNAME is `zawgyi` and module name is `zawgyi_keyboard.py` because
+		this package is shipped with zawgyi font and zawgyi xkeyboard.
+		If you wish to use this module for another font package, you may need 
+		to change FONTNAME and other necessory modifications in name `zawgyi`
+        to your font name or you can make better module.
+	"""
+
 	FONTNAME = 'zawgyi'
 	
 	# asking what to do ( install or uninstall, something like that)
@@ -458,15 +468,13 @@ You may NEED to Log Out or Restart your system to correct your keyboard.\n'''
 		elif ans == 'q':
 			sys.exit('\nHave a nice day, Good bye!\n')
 		elif ans == 'u':
-			print '\nProceeding font updating...\n'
+			print '\nProceeding manual font upgrading...\n'
 			man_upgrade()
 		elif ans == 'o':
-			print '\nProceeding font upgrading...\n'
-			show_font()
+			print '\nProceeding online font upgrading...\n'
 			online_upgrade()
 		elif ans == 's':
-			print '\nProceeding to show current font...\n'
+			print '\nChecking current fonts...'
 			show_font()
 		else:
 			print '\nPlease press *small letter* [i] [r] [h] [u] [o] [s] [q] !\n'
-
