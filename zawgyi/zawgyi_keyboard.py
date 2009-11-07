@@ -19,7 +19,6 @@
 #	You should have received a copy of the GNU General Public License
 #	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-#
 #	You can always get the lastest version of this module at:
 #
 #	http://zawgyi-keyboard.googlecode.com/svn/branch/py-package/zawgyi
@@ -51,7 +50,7 @@ import sys
 import urllib2
 
 #Classifying operating system paths, you can add other distro fhs.
-class linux:
+class Linux:
 	fonts_dir = '/usr/share/fonts'
 	data_dir = '/usr/share'
 	doc_dir = '/usr/share/doc'
@@ -62,7 +61,7 @@ class linux:
 		""" Classifying Linux FHS """
 		print "Using Linux FHS...\n"
 
-class freebsd:
+class FreeBSD:
 	fonts_dir = '/usr/local/lib/X11/fonts'
 	data_dir = '/usr/local/share'
 	doc_dir = '/usr/local/share/doc'
@@ -73,10 +72,25 @@ class freebsd:
 		""" Classifying FreeBSD FHS """
 		print "Using FreeBSD FHS...\n"
 
+
+# Searching sort of platforms
+tux =''
+try:
+	s1 = re.search("linux",sys.platform)
+	tux = s1.group(0)
+except AttributeError:
+	pass
+beastie = ''
+try:
+	s2 = re.search("freebsd",sys.platform)
+	beastie = s2.group(0)
+except AttributeError:
+	pass
+	
 # Detecting distributions and finding correct paths for installation
-if sys.platform == 'linux2':
+if tux == 'linux':
 	print '\nYour system is running Linux'
-	use_fhs = linux()
+	use_fhs = Linux()
 	possible_xkb_dirs = use_fhs.xkb_dir
 	for correct_xkb_dir in possible_xkb_dirs:
 		if os.path.exists(correct_xkb_dir):
@@ -87,27 +101,13 @@ if sys.platform == 'linux2':
 	DOC_DIR = use_fhs.doc_dir
 	APPS_DIR = use_fhs.apps_dir
 	ICONS_DIR = use_fhs.icons_dir
-elif sys.platform == 'freebsd7':
+elif beastie == 'freebsd':
 	print '\nYour system is running FreeBSD'
-	use_fhs = freebsd()
+	use_fhs = FreeBSD()
 	FONT_DIR = use_fhs.fonts_dir
 	DATA_DIR = use_fhs.data_dir
 	DOC_DIR = use_fhs.doc_dir
 	XKB_DIR= use_fhs.xkb_dir
-	APPS_DIR = use_fhs.apps_dir
-	ICONS_DIR = use_fhs.icons_dir
-# testing on windows xp
-elif sys.platform == 'cygwin':
-	print '\nYour system is running cygwin on Windows'
-	use_fhs = linux()
-	possible_xkb_dirs = use_fhs.xkb_dir
-	for correct_xkb_dir in possible_xkb_dirs:
-		if os.path.exists(correct_xkb_dir):
-			XKB_DIR = correct_xkb_dir
-			break
-	FONT_DIR = use_fhs.fonts_dir
-	DATA_DIR = use_fhs.data_dir
-	DOC_DIR = use_fhs.doc_dir
 	APPS_DIR = use_fhs.apps_dir
 	ICONS_DIR = use_fhs.icons_dir
 else:
@@ -133,7 +133,7 @@ src_path_0 = './src0/'
 src_path_1  = './src1/'
 #font_file  = not define -- changeable
 xkb_data = 'mm'
-key_map = 'zawgyi_keyboard_unicode5.1_style.png'
+key_map = 'zawgyi_keyboard_2009.pdf'
 desktop_file = 'zawgyi.desktop'
 icon = 'zawgyi.png'
 
@@ -160,12 +160,12 @@ else:
 src_xkb_data = os.path.join(src_path_0, xkb_data)
 if os.path.exists(src_xkb_data):
 	xkb_data = open(src_xkb_data).read()
-	if xkb_data.find('zawgyi') == -1:
-		print 'error: You have NOT zawgyi mm file!'
-	elif xkb_data.find('soemin@my-MM.org') == -1:
-		print 'You have modified zawgyi mm file!'
+	if xkb_data.find('zawgyi')== -1 and xkb_data.find('soemin@my-MM.org')== -1:
+		print 'error: You have NOT Zawgyi xkeyboard file!'
+	elif xkb_data.find('Saturngod') == -1:
+		print 'Xkeyboard : Zawgyi 2009 Original Style [ OK ]'
 	else:
-		print 'Xkeyboard : Zawgyi 2009 Original Unicode Style [ OK ]'
+		print 'Xkeyboard : Zawgyi 2009 Zawgyi Style [ OK ]'
 else:
 	print 'error: mm xkeyboard file not found.'
 	sys.exit("Interrupted installation.\n")
@@ -173,22 +173,18 @@ else:
 # finding keyboard map
 src_map_path = os.path.join(src_path_0, key_map)
 if os.path.exists(src_map_path):
-    print 'Keyboard layout map [ OK ]'
+    print 'Keyboard layout Map [ OK ]'
 else:
 	print 'error: Keyboard Layout map not found.'
 # finding desktop file
-if sys.platform == 'linux2':
+if tux == 'linux':
 	src_desktop = os.path.join(src_path_0, desktop_file)
 	if os.path.exists(src_desktop):
 		print 'Desktop file for Linux [ OK ]'
-elif sys.platform == 'freebsd7':
+elif beastie == 'freebsd':
 	src_desktop = os.path.join(src_path_1, desktop_file)
 	if os.path.exists(src_desktop):
 		print 'Desktop file for FreeBSD [ OK ]'
-elif sys.platform == 'cygwin':
-	src_desktop = os.path.join(src_path_0, desktop_file)
-	if os.path.exists(src_desktop):
-		print 'Desktop file for Cygwin [ OK ]'
 else:
 	print 'Refusing to install desktop file on menu.'
 # finding icon file
@@ -412,8 +408,14 @@ def online_upgrade():
 		font_zg = zg.group(0)
 		font_url = url+font_zg
 		
-		process = subprocess.Popen(["wget", "-c", font_url])
-		process.wait()
+		try:
+			process = subprocess.Popen(["wget", "-c", font_url])
+			process.wait()
+		except OSError:
+			print "\nerror: Unable to download font, needs to install 'wget'.\n"
+			wget_SuggestMessage()
+			sys.exit("See you, after 'wget' installation finished.\n")
+			
 	except IOError:
 		print '\nerror: Unable to download font, your system might be offline!\n'
 		sys.exit('Good bye!\n')
@@ -436,7 +438,16 @@ def online_upgrade():
 		os.remove(get_font_path)
 		print '\nFont upgrading done.\n'
 
-	
+def wget_SuggestMessage():
+	""" Wget installation help
+	In case 'wget' is not already installed on the system which you are running
+	you might need to install 'wget' to update new font from this module.
+	Because this module uses 'wget' program to download font from project svn."""
+	print '''It seems that 'wget' program is not installed on your system.
+If you are running (.deb) base Distro like Debian, run\n'sudo apt-get install wget'
+If you are ruuning (.rpm) base Distro like Fedora, run\n'yum install wget'
+If you are running FreeBSD, run '# pkg_add -r wget' .\n'''
+
 if __name__ == '__main__':
 
 	"""	FONTNAME is `zawgyi` and module name is `zawgyi_keyboard.py` because

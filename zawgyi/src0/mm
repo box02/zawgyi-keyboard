@@ -2,6 +2,7 @@
 
 // Zawgyi 2009 July Keyboard by Soe Min <soemin@my-MM.org>
 // Fixed \ by kokhy
+// Change Zawgyi Style by Saturngod
 
 // $XKeyboardConfig$
 
@@ -10,6 +11,7 @@ xkb_symbols "mm-zawgyi-2009-jul" {
 
     name[Group1]= "Myanmar - Zawgyi 2009 July";
 
+    key <TLDE> { [	U103F, asciitilde,	grave,	asciitilde   ] }; 
     key <AE01> { [      U1041,      U100B,            1,      exclam ] };
     key <AE02> { [      U1042,      U100D,            2,          at ] };
     key <AE03> { [      U1043,      U100E,            3,  numbersign ] };
@@ -49,17 +51,17 @@ xkb_symbols "mm-zawgyi-2009-jul" {
     key <AC11> { [      U1012,      U1013                           ] };
     key <AC12> { [      U104F                           ] };
 
-    key <AB01> { [      U1016,       U1007,           z,           Z ] };
-    key <AB02> { [      U1011,       U100C,           x,           X ] };
-    key <AB03> { [      U1001,       U1003,           c,           C ] };
-    key <AB04> { [      U101C,       U1020,           v,           V ] };
+    key <AB01> { [      U1016,      U1007,           z,           Z ] };
+    key <AB02> { [      U1011,      U100C,           x,           X ] };
+    key <AB03> { [      U1001,      U1003,           c,           C ] };
+    key <AB04> { [      U101C,      U1020,           v,           V ] };
     key <AB05> { [      U1018,      null,           b,           B ] };
-    key <AB06> { [      U100A,       U1009,           n,           N ] };
-    key <AB07> { [      U102C,       U103B,           m,           M ] };
-    key <AB08> { [      U101A,        U101D,      comma,        less ] };
-    key <AB09> { [      U104A,        U104B,     period,     greater ] };
+    key <AB06> { [      U100A,      U1009,           n,           N ] };
+    key <AB07> { [      U102C,      U103B,           m,           M ] };
+    key <AB08> { [      U101A,      U101D,      comma,        less ] };
+    key <AB09> { [      period,      U1008,     period,     greater ] };
+    key <AB10> { [      U104B,      U104A,     slash,     question ] };
     
     key <BKSL> { [ U104F ] };
 };
-
 
