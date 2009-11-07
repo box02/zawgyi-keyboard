@@ -7,10 +7,10 @@ v0.3.3
 * import zawgyi_keyboard_2009.pdf for keyboard layout
 * delete zawgyi_keyboard_unicode5.1_style.png
 * delete Zawgyi_Keyboard_Layout_2009_Linux-Unix.pdf
-* make to be able to install on all range of FreeBSD version and Linux version
+* make to be able to install on all version of FreeBSD and Linux
 * add wget_SuggestMessage() in module for while wget not installed
 
- -- box02 <thebox02@gmail.com> $date Sat Nov  7 22:48:58 CET 2009
+ -- box02 <thebox02@gmail.com> $date Sat Nov  7 23:08:17 CET 2009
  
  
 v0.3.2
