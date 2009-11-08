@@ -39,7 +39,7 @@ __license__  = "GPL"
 
 
 """ 	zawgyi-keyboard package """
-__version__ = "0.3.2"
+__version__ = "0.3.3"
 __metor__ = "box02 <thebox02@gmail.com>"
 
 import glob
