@@ -35,7 +35,7 @@
 """
 __author__ = "Phone Htut <phonehtut2@gmail.com>"
 __copyright__ = "Copyright (c) 2009, Phone Htut"
-__license__  = "GPL"
+__license__  = "GPLv3"
 
 
 """ 	zawgyi-keyboard package """
@@ -73,22 +73,8 @@ class FreeBSD:
 		print "Using FreeBSD FHS...\n"
 
 
-# Searching sort of platforms
-tux =''
-try:
-	s1 = re.search("linux",sys.platform)
-	tux = s1.group(0)
-except AttributeError:
-	pass
-beastie = ''
-try:
-	s2 = re.search("freebsd",sys.platform)
-	beastie = s2.group(0)
-except AttributeError:
-	pass
-	
 # Detecting distributions and finding correct paths for installation
-if tux == 'linux':
+if sys.platform.startswith('linux'):
 	print '\nYour system is running Linux'
 	use_fhs = Linux()
 	possible_xkb_dirs = use_fhs.xkb_dir
@@ -101,7 +87,7 @@ if tux == 'linux':
 	DOC_DIR = use_fhs.doc_dir
 	APPS_DIR = use_fhs.apps_dir
 	ICONS_DIR = use_fhs.icons_dir
-elif beastie == 'freebsd':
+elif sys.platform.startswith('freebsd'):
 	print '\nYour system is running FreeBSD'
 	use_fhs = FreeBSD()
 	FONT_DIR = use_fhs.fonts_dir
@@ -177,11 +163,11 @@ if os.path.exists(src_map_path):
 else:
 	print 'error: Keyboard Layout map not found.'
 # finding desktop file
-if tux == 'linux':
+if sys.platform.startswith('linux'):
 	src_desktop = os.path.join(src_path_0, desktop_file)
 	if os.path.exists(src_desktop):
 		print 'Desktop file for Linux [ OK ]'
-elif beastie == 'freebsd':
+elif sys.platform.startswith('freebsd'):
 	src_desktop = os.path.join(src_path_1, desktop_file)
 	if os.path.exists(src_desktop):
 		print 'Desktop file for FreeBSD [ OK ]'
@@ -446,7 +432,7 @@ def wget_SuggestMessage():
 	print '''It seems that 'wget' program is not installed on your system.
 If you are running (.deb) base Distro like Debian, run\n'sudo apt-get install wget'
 If you are ruuning (.rpm) base Distro like Fedora, run\n'yum install wget'
-If you are running FreeBSD, run '# pkg_add -r wget' .\n'''
+If you are running FreeBSD, run 'pkg_add -r wget' .\n'''
 
 if __name__ == '__main__':
 
