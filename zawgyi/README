@@ -6,7 +6,12 @@ The Downloaded zawgyi-keyboard*.tar.gz would be in ~/Desktop or somewhere else.
 
 Change to your Path
 
-$ cd /path/to/zawgyi-keyboard*.tar.gz/
+$ cd ~/Desktop 
+
+or
+
+$ cd /path-to-your-zawgyi-keyboard-tar-gz-directory/
+
 $ sudo tar xvzf zawgyi-keyboard*.tar.gz
 
 $ cd zawgyi
@@ -44,7 +49,7 @@ Answering and giving information a few steps would be completed installation.
 	For old zawgyi font till ZawgyiOne20080210, it needs to have
 	Third Level Chooser.
 	For new zawgyi font (from July 2009 version), it does not need
-	to have Third Level Chooser. It would be using shift+f instead of
+	to have Third Level Chooser. It would be using `shift+f` or `~` instead of
 	pressing Third Level Switch Key. 
 	
 	TIPS:
